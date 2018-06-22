@@ -18,7 +18,7 @@ class CounterDisplay extends Component{
     return (
       <View style={styles.outerContainer}>
         <View style ={styles.textStuff}>
-          <Text style={styles.label}>Public Restroom Rating:</Text>
+          <Text style={styles.label}>Counter App:</Text>
           <Text style={styles.author}>By Will Munoz</Text>
         </View>
         <View style={styles.container}>
