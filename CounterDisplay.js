@@ -5,14 +5,41 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button,
+  ListView,
 } from 'react-native';
 
+
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 class CounterDisplay extends Component{
     constructor(props){
         super(props);
+        this.state = {
+         dataSource: ds.cloneWithRows([
+          {
+            location: 'Quincy Market',
+            quality: '3 out of 5 stars',
+            eminities: 'toilet paper mints',
+          },
+          {
+            location: 'Starbuck on Bolyston Ave',
+            quality: '4 out of 5 stars',
+            eminities: 'coffee nearby'
+          }
+        ]),
+      };
     }
+
+  _renderRow(rowData){
+    return (
+      <View style={{borderWidth: 2, alignItems: 'center', justifyContent: 'center', marginTop: 5, width: 250}}>
+        <Text>{rowData.location}</Text>
+        <Text>{rowData.quality}</Text>
+        <Text>{rowData.eminities}</Text>
+     </View>
+    );
+  }
 
   render() {
     return (
@@ -21,6 +48,9 @@ class CounterDisplay extends Component{
           <Text style={styles.label}>Counter App:</Text>
           <Text style={styles.author}>By Will Munoz</Text>
         </View>
+        <ListView style={styles.info}
+          dataSource={this.state.dataSource}
+          renderRow={this._renderRow}/>
         <View style={styles.container}>
           <View style={styles.countContainer}>
             <Text style={styles.count}>{this.props.count}</Text>
@@ -50,8 +80,15 @@ const styles = StyleSheet.create({
   },
   
   textStuff:{
+    flex: 2,
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center'
+  },
+
+  info:{
+    flex: 1,
+    flexDirection: 'row',
   },
 
   label: {
@@ -65,6 +102,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'

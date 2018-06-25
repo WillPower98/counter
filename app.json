@@ -1,5 +1,4 @@
 {
   "name": "Counter",
-  "displayName": "Counter",
-  "expo": { "sdkVersion": "18.0.0" } 
+  "displayName": "Counter"
 }
