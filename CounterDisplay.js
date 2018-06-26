@@ -6,51 +6,41 @@ import {
   Text,
   View,
   Button,
-  ListView,
+  SectionList,
 } from 'react-native';
 
 
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+const dataSource = [
+  {data:[{rating:'3 out of 5 stars'},{amenities: 'toilet paper, mints'}], key:'Quincy Market'},
+  {data:[{rating:'4 out of 5 stars'},{amenities: 'coffee nearby'}], key:'Starbucks on Bolyston Ave'},
+  {data:[{rating:'1 out of 5 stars'},{amenities: 'in conveciance store'}], key:'7/11 on Comm Ave'}
+]
 
 class CounterDisplay extends Component{
     constructor(props){
         super(props);
-        this.state = {
-         dataSource: ds.cloneWithRows([
-          {
-            location: 'Quincy Market',
-            quality: '3 out of 5 stars',
-            eminities: 'toilet paper mints',
-          },
-          {
-            location: 'Starbuck on Bolyston Ave',
-            quality: '4 out of 5 stars',
-            eminities: 'coffee nearby'
-          }
-        ]),
-      };
     }
 
-  _renderRow(rowData){
-    return (
-      <View style={{borderWidth: 2, alignItems: 'center', justifyContent: 'center', marginTop: 5, width: 250}}>
-        <Text>{rowData.location}</Text>
-        <Text>{rowData.quality}</Text>
-        <Text>{rowData.eminities}</Text>
-     </View>
-    );
+  renderItem = (item) => {
+    return<Text style={styles.infoText}>{item.item.rating}{item.item.amenities}</Text>
+  }
+
+  renderHeader = (headerItem) => {
+    return <Text style={styles.header}>{headerItem.section.key}</Text>
   }
 
   render() {
     return (
       <View style={styles.outerContainer}>
         <View style ={styles.textStuff}>
-          <Text style={styles.label}>Counter App:</Text>
+          <Text style={styles.label}>Bathrooms Nearby:</Text>
           <Text style={styles.author}>By Will Munoz</Text>
         </View>
-        <ListView style={styles.info}
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow}/>
+        <SectionList style={styles.info}
+          renderItem = {this.renderItem}
+          renderSectionHeader={this.renderHeader}
+          sections = {dataSource}
+          keyExtractor={(item) => item.amenities}/>
         <View style={styles.container}>
           <View style={styles.countContainer}>
             <Text style={styles.count}>{this.props.count}</Text>
@@ -80,15 +70,15 @@ const styles = StyleSheet.create({
   },
   
   textStuff:{
-    flex: 2,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
   },
 
   info:{
-    flex: 1,
-    flexDirection: 'row',
+    flex: 2,
+    flexDirection: 'row'
   },
 
   label: {
@@ -146,6 +136,17 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: 'black',
     backgroundColor: 'steelblue'
+  },
+
+  infoText:{
+    fontSize: 14,
+    color: 'purple'
+  },
+
+  header:{
+    fontSize: 20,
+    marginTop: 10,
+    color: 'purple'
   }
   
 
