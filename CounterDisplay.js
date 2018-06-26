@@ -11,22 +11,21 @@ import {
 
 
 const dataSource = [
-  {data:[{rating:'3 out of 5 stars'},{amenities: 'toilet paper, mints'}], key:'Quincy Market'},
-  {data:[{rating:'4 out of 5 stars'},{amenities: 'coffee nearby'}], key:'Starbucks on Bolyston Ave'},
-  {data:[{rating:'1 out of 5 stars'},{amenities: 'in conveciance store'}], key:'7/11 on Comm Ave'}
+  {data:['Rating: 3 out of 5 stars', 'Amenities: toilet paper, mints'], Location:'Quincy Market'},
+  {data:['Rating:4 out of 5 stars', 'Amenities: coffee nearby'], Location:'Starbucks on Bolyston Ave'},
+  {data:['Rating:1 out of 5 stars', 'Amenities: in conveciance store'], Location:'7/11 on Comm Ave'}
 ]
 
 class CounterDisplay extends Component{
     constructor(props){
         super(props);
     }
-
-  renderItem = (item) => {
-    return<Text style={styles.infoText}>{item.item.rating}{item.item.amenities}</Text>
+  renderItem = ({item, index, section}) => {
+    return<Text key = {index} style={styles.infoText}>{item}</Text>
   }
 
-  renderHeader = (headerItem) => {
-    return <Text style={styles.header}>{headerItem.section.key}</Text>
+  renderHeader = ({section:{Location}}) => {
+    return <Text style={styles.header}>{Location}</Text>
   }
 
   render() {
@@ -40,7 +39,7 @@ class CounterDisplay extends Component{
           renderItem = {this.renderItem}
           renderSectionHeader={this.renderHeader}
           sections = {dataSource}
-          keyExtractor={(item) => item.amenities}/>
+          keyExtractor={(item, index) => item + index}/>
         <View style={styles.container}>
           <View style={styles.countContainer}>
             <Text style={styles.count}>{this.props.count}</Text>
@@ -146,7 +145,8 @@ const styles = StyleSheet.create({
   header:{
     fontSize: 20,
     marginTop: 10,
-    color: 'purple'
+    color: 'purple',
+    fontWeight: 'bold'
   }
   
 
