@@ -8,7 +8,7 @@ import {
   Button,
   SectionList,
 } from 'react-native';
-
+import MapView, { Marker } from 'react-native-maps';
 
 const dataSource = [
   {data:['Rating: 3 out of 5 stars', 'Amenities: toilet paper, mints'], Location:'Quincy Market'},
@@ -19,7 +19,20 @@ const dataSource = [
 class CounterDisplay extends Component{
     constructor(props){
         super(props);
+        return {
+          region: {
+            latitude: 42.348887,
+            longitude: -71.101606,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+          }
     }
+  }
+
+    onRegionChange(region) {
+      this.setState({ region });
+    }
+
   renderItem = ({item, index, section}) => {
     return<Text key = {index} style={styles.infoText}>{item}</Text>
   }
@@ -40,6 +53,17 @@ class CounterDisplay extends Component{
           renderSectionHeader={this.renderHeader}
           sections = {dataSource}
           keyExtractor={(item, index) => item + index}/>
+        <MapView
+        region={this.state.region}
+        onRegionChange={this.onRegionChange}>
+        {this.state.markers.map(marker => (
+           <Marker
+            coordinate={marker.latlng}
+            title={marker.title}
+            description={marker.description}
+        />
+        ))}
+       </MapView>
         <View style={styles.container}>
           <View style={styles.countContainer}>
             <Text style={styles.count}>{this.props.count}</Text>
@@ -147,6 +171,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: 'purple',
     fontWeight: 'bold'
+  },
+  map:{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0
   }
   
 
